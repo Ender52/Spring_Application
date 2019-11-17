@@ -18,8 +18,9 @@ public class AttendanceList extends AbstractEntity {
         this.events = events;
     }
 
-    public void addEvent(AttendanceListEvent event) {
+    public void addEvent(AttendanceListEvent event, EventState state) {
         Objects.requireNonNull(event);
+        event.setState(state);
         if (events == null) {
             this.events = new ArrayList<>();
         }
@@ -29,7 +30,7 @@ public class AttendanceList extends AbstractEntity {
         }
     }
 
-    public void removeEvent(AttendanceListEvent event) {
+    public void removeEvent(Event event) {
         Objects.requireNonNull(event);
         final Iterator<AttendanceListEvent> it = events.iterator();
         while (it.hasNext()) {

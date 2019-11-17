@@ -31,8 +31,10 @@ public class Student extends User {
         this.friendList = friendList;
     }
 
-    public void createEvent(String name, String location, Date dateFrom, Date dateTo, List<User> attendees){
+    public void createEvent(String name, String location, Date dateFrom, Date dateTo){
         Event event = new Event();
+        List<User> attendees = new ArrayList<>();
+        attendees.add(this);
         event.setName(name);
         event.setLocation(location);
         event.setDateFrom(dateFrom);
