@@ -52,4 +52,9 @@ public class UserService {
         Objects.requireNonNull(event);
         userFrom.sendInvitation(userTo, event);
     }
+
+    @Transactional(readOnly = true)
+    public boolean exists(String username) {
+        return dao.findByUsername(username) != null;
+    }
 }

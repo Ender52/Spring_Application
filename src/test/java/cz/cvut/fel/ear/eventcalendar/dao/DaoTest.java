@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 // DataJpaTest does not load all the application beans, it starts only persistence-related stuff
 @DataJpaTest
+@ComponentScan(basePackageClasses = Main.class)
 public class DaoTest {
 
     @Autowired

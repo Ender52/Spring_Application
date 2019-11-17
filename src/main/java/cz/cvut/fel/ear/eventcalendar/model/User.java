@@ -1,10 +1,15 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "CALENDAR_USER")
-public abstract class User extends AbstractEntity {
+@NamedQueries({
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+})
+public class User extends AbstractEntity {
 
     @Basic(optional = true)
     @Column(nullable = true)
@@ -22,11 +27,30 @@ public abstract class User extends AbstractEntity {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<User> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(List<User> friendList) {
+        this.friendList = friendList;
+    }
+
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private AttendanceList attendanceList;
 
-    public User() {
-    }
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<User> friendList = new ArrayList<>();
 
     public String getFirstName() {
         return firstName;

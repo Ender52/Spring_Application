@@ -27,7 +27,7 @@ public class Event extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private Student madeByStudent;
+    private User madeByUser;
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<User> attendees = new ArrayList<>();
@@ -68,12 +68,12 @@ public class Event extends AbstractEntity {
         this.dateTo = dateTo;
     }
 
-    public Student getMadeByStudent() {
-        return madeByStudent;
+    public User getMadeByUser() {
+        return madeByUser;
     }
 
-    public void setMadeByStudent(Student madeByStudent) {
-        this.madeByStudent = madeByStudent;
+    public void setMadeByUser(User madeByStudent) {
+        this.madeByUser = madeByStudent;
     }
 
     public List<User> getAttendees() {
