@@ -1,9 +1,6 @@
 package cz.cvut.fel.ear.eventcalendar.environment;
 
-import cz.cvut.fel.ear.eventcalendar.model.Category;
-import cz.cvut.fel.ear.eventcalendar.model.Event;
-import cz.cvut.fel.ear.eventcalendar.model.Role;
-import cz.cvut.fel.ear.eventcalendar.model.User;
+import cz.cvut.fel.ear.eventcalendar.model.*;
 
 import java.util.Date;
 import java.util.Random;
@@ -37,7 +34,14 @@ public class Generator {
     }
 
     public static Event generateEvent() {
-        User cretor = generateStudent();
-        return cretor.createEvent("Event" + randomInt(), "", new Date(), new Date());
+        User creator = generateStudent();
+        return creator.createEvent("Event" + randomInt(), "", new Date(), new Date());
     }
+
+    public static AttendanceListEvent generateAttendanceListEvent() {
+        User cretor = generateStudent();
+        AttendanceListEvent attendanceListEvent = new AttendanceListEvent(generateEvent());
+        return attendanceListEvent;
+    }
+
 }

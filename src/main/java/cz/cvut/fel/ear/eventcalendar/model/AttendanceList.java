@@ -41,4 +41,8 @@ public class AttendanceList extends AbstractEntity {
             }
         }
     }
+
+    public int size() {
+        return events.size();
+    }
 }

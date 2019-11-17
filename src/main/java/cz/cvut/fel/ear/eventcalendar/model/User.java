@@ -47,7 +47,7 @@ public class User extends AbstractEntity {
     }
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private AttendanceList attendanceList;
+    private AttendanceList attendanceList = new AttendanceList();
 
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<User> friendList = new ArrayList<>();
@@ -116,6 +116,7 @@ public class User extends AbstractEntity {
             return null;
         }
     }
+
 
     @Override
     public String toString() {
