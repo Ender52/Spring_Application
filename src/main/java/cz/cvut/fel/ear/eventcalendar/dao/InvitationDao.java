@@ -1,9 +1,11 @@
 package cz.cvut.fel.ear.eventcalendar.dao;
 
 import cz.cvut.fel.ear.eventcalendar.model.Invitation;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class InvitationDao extends BaseDao<Invitation> {
-    protected InvitationDao(Class<Invitation> type) {
-        super(type);
+    public InvitationDao() {
+        super(Invitation.class);
     }
 }

@@ -4,9 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "CALENDAR_USER")
-@NamedQueries({
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
-})
 public abstract class User extends AbstractEntity {
 
     @Basic(optional = true)
@@ -25,10 +22,11 @@ public abstract class User extends AbstractEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private AttendanceList attendanceList;
 
-    public User() {}
+    public User() {
+    }
 
     public String getFirstName() {
         return firstName;
@@ -68,6 +66,13 @@ public abstract class User extends AbstractEntity {
 
     public void setAttendanceList(AttendanceList attendanceList) {
         this.attendanceList = attendanceList;
+    }
+
+    public void sendInvitation(User toUser, Event event){
+        Invitation invitation = new Invitation();
+        invitation.setEvent(event);
+        invitation.setFromUser(this);
+        invitation.setToUser(toUser);
     }
 
     @Override
