@@ -53,7 +53,7 @@ public class SystemInitializer {
         user.setFirstName("Alik");
         user.setLastName("Novak");
         user.setPassword("qwerty");
-        user.setRole(Role.STUDENT);
+        user.setRole(Role.ADMIN);
         LOG.info("Generated admin user with credentials " + user.getUsername() + "/" + user.getPassword());
         userService.persist(user);
     }

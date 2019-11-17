@@ -1,22 +1,30 @@
 package cz.cvut.fel.ear.eventcalendar.service;
 
+import cz.cvut.fel.ear.eventcalendar.dao.EventDao;
+import cz.cvut.fel.ear.eventcalendar.dao.InvitationDao;
 import cz.cvut.fel.ear.eventcalendar.dao.UserDao;
 import cz.cvut.fel.ear.eventcalendar.model.Event;
+import cz.cvut.fel.ear.eventcalendar.model.Role;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Service
 public class UserService {
     private final UserDao dao;
+    private final InvitationDao invitationDao;
+    private final EventDao eventDao;
 
     @Autowired
-    public UserService(UserDao dao) {
+    public UserService(UserDao dao, InvitationDao invitationDao, EventDao eventDao) {
         this.dao = dao;
+        this.invitationDao = invitationDao;
+        this.eventDao = eventDao;
     }
 
     @Transactional(readOnly = true)
@@ -46,12 +54,36 @@ public class UserService {
     }
 
     @Transactional
+    public void createEvent() {
+
+    }
+
+    @Transactional
     public void sendInvitation(User userFrom, User userTo, Event event) {
         Objects.requireNonNull(userFrom);
         Objects.requireNonNull(userTo);
         Objects.requireNonNull(event);
-        userFrom.sendInvitation(userTo, event);
+        invitationDao.persist(userFrom.sendInvitation(userTo, event));
     }
+
+    @Transactional
+    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
+
+        Objects.requireNonNull(creator);
+        if (creator.getRole() != Role.STUDENT) {
+            return;
+        }
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(location);
+        Objects.requireNonNull(dateFrom);
+        Objects.requireNonNull(dateTo);
+        Event event = creator.createEvent(name, location, dateFrom, dateTo);
+
+        eventDao.persist(event);
+
+
+    }
+
 
     @Transactional(readOnly = true)
     public boolean exists(String username) {

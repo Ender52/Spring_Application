@@ -72,8 +72,8 @@ public class Event extends AbstractEntity {
         return madeByUser;
     }
 
-    public void setMadeByUser(User madeByStudent) {
-        this.madeByUser = madeByStudent;
+    public void setMadeByUser(User madeByUser) {
+        this.madeByUser = madeByUser;
     }
 
     public List<User> getAttendees() {

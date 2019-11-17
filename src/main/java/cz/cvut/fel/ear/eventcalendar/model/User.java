@@ -2,6 +2,7 @@ package cz.cvut.fel.ear.eventcalendar.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,6 @@ public class User extends AbstractEntity {
     @Basic(optional = true)
     @Column(nullable = true)
     private String firstName;
-
     @Basic(optional = true)
     @Column(nullable = true)
     private String lastName;
@@ -92,11 +92,29 @@ public class User extends AbstractEntity {
         this.attendanceList = attendanceList;
     }
 
-    public void sendInvitation(User toUser, Event event){
+    public Invitation sendInvitation(User toUser, Event event) {
         Invitation invitation = new Invitation();
         invitation.setEvent(event);
         invitation.setFromUser(this);
         invitation.setToUser(toUser);
+        return invitation;
+    }
+
+    public Event createEvent(String name, String location, Date dateFrom, Date dateTo) {
+        if (role == Role.STUDENT) {
+            Event event = new Event();
+            List<User> attendees = new ArrayList<>();
+            attendees.add(this);
+            event.setName(name);
+            event.setMadeByUser(this);
+            event.setLocation(location);
+            event.setDateFrom(dateFrom);
+            event.setDateTo(dateTo);
+            event.setAttendees(attendees);
+            return event;
+        } else {
+            return null;
+        }
     }
 
     @Override

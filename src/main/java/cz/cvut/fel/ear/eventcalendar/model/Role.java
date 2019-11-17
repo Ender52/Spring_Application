@@ -1,7 +1,7 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
 public enum Role {
-    USER("ROLE_USER"), STUDENT("ROLE_STUDENT");
+    USER("ROLE_USER"), STUDENT("ROLE_STUDENT"), ADMIN("ROLE_ADMIN");
 
     private final String name;
 
