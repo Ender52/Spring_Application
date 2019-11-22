@@ -34,13 +34,33 @@ public class UserServiceTest {
         User userFrom = Generator.generateStudent();
         User userTo = Generator.generateStudent();
         Event event = Generator.generateEvent();
-        int numberOfUsers = sut.findAll().size();
         em.persist(userTo);
         em.persist(userFrom);
         em.persist(event);
-        numberOfUsers = sut.findAll().size();
         assertEquals(invitationService.findAll().size(), 0);
         sut.sendInvitation(userFrom, userTo, event);
         assertEquals(invitationService.findAll().size(), 1);
+    }
+
+    @Test
+    public void deleteInvitatioDeletesInvitation() {
+        User userFrom = Generator.generateStudent();
+        User userTo = Generator.generateStudent();
+        Event event = Generator.generateEvent();
+        em.persist(userTo);
+        em.persist(userFrom);
+        em.persist(event);
+        sut.sendInvitation(userFrom, userTo, event);
+        assertEquals(invitationService.findAll().size(), 1);
+        sut.deleteInvitation(userFrom, userTo, event);
+        assertEquals(invitationService.findAll().size(), 0);
+
+    }
+
+
+    @Test
+    public void createEventCreatesEvent() {
+        User user = Generator.generateStudent();
+
     }
 }

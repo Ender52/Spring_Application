@@ -1,6 +1,9 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Invitation extends AbstractEntity {
@@ -46,4 +49,5 @@ public class Invitation extends AbstractEntity {
                 fromUser + " to " + toUser +
                 "(" + event + ")}";
     }
+
 }

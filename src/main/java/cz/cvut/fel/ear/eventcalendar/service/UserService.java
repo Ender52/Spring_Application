@@ -67,6 +67,16 @@ public class UserService {
     }
 
     @Transactional
+    public void deleteInvitation(User userFrom, User userTo, Event event) {
+        Objects.requireNonNull(userFrom);
+        Objects.requireNonNull(userTo);
+        Objects.requireNonNull(event);
+
+        invitationDao.remove(userFrom.sendInvitation(userTo, event));
+    }
+
+
+    @Transactional
     public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
 
         Objects.requireNonNull(creator);
