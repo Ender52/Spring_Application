@@ -87,6 +87,13 @@ public class UserService {
         eventDao.persist(event);
     }
 
+    @Transactional
+    public void changeRoleToStudent(User admin, User user){
+        Objects.requireNonNull(admin);
+        Objects.requireNonNull(user);
+        admin.changeRoleToStudent(user);
+    }
+
     @Transactional(readOnly = true)
     public boolean exists(String username) {
         return dao.findByUsername(username) != null;

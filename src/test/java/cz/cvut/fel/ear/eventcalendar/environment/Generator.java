@@ -35,7 +35,7 @@ public class Generator {
 
     public static Event generateEvent() {
         User creator = generateStudent();
-        return creator.createEvent("Event" + randomInt(), "", new Date(), new Date());
+        return creator.createEvent("Event" + randomInt(), "", new Date(), new Date(), randomInt());
     }
 
     public static AttendanceListEvent generateAttendanceListEvent() {
