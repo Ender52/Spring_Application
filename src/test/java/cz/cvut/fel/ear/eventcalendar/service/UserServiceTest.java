@@ -2,6 +2,7 @@ package cz.cvut.fel.ear.eventcalendar.service;
 
 import cz.cvut.fel.ear.eventcalendar.environment.Generator;
 import cz.cvut.fel.ear.eventcalendar.model.Event;
+import cz.cvut.fel.ear.eventcalendar.model.Role;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -61,6 +63,35 @@ public class UserServiceTest {
     @Test
     public void createEventCreatesEvent() {
         User user = Generator.generateStudent();
+        em.persist(user);
+        sut.createEvent(user, "EVENT1", "Dejvice", new Date(), new Date(), 100);
+        Event result = em.find(Event.class, 100);
+        assertEquals(result.getName(), "EVENT1");
+    }
 
+    @Test
+    public void changeRoleChangesRole() {
+        User admin = Generator.generateAdmin();
+        em.persist(admin);
+        User user = Generator.generateUser();
+
+        em.persist(user);
+        sut.changeRoleToStudent(admin, user);
+        em.merge(user);
+        User result = em.find(User.class, user.getId());
+        assertEquals(result.getRole(), Role.STUDENT);
+    }
+
+    @Test
+    public void changeRoleChangesRoleFailedNotAdmin() {
+        User student = Generator.generateStudent();
+        em.persist(student);
+        User user = Generator.generateUser();
+
+        em.persist(user);
+        sut.changeRoleToStudent(student, user);
+        em.merge(user);
+        User result = em.find(User.class, user.getId());
+        assertEquals(result.getRole(), Role.USER);
     }
 }

@@ -17,9 +17,29 @@ public class Generator {
         return RAND.nextBoolean();
     }
 
+    public static User generateUser() {
+        final User user = new User();
+        user.setRole(Role.USER);
+        user.setFirstName("FirstName" + randomInt());
+        user.setLastName("LastName" + randomInt());
+        user.setUsername("username" + randomInt() + "@kbss.felk.cvut.cz");
+        user.setPassword(Integer.toString(randomInt()));
+        return user;
+    }
+
     public static User generateStudent() {
         final User user = new User();
         user.setRole(Role.STUDENT);
+        user.setFirstName("FirstName" + randomInt());
+        user.setLastName("LastName" + randomInt());
+        user.setUsername("username" + randomInt() + "@kbss.felk.cvut.cz");
+        user.setPassword(Integer.toString(randomInt()));
+        return user;
+    }
+
+    public static User generateAdmin() {
+        final User user = new User();
+        user.setRole(Role.ADMIN);
         user.setFirstName("FirstName" + randomInt());
         user.setLastName("LastName" + randomInt());
         user.setUsername("username" + randomInt() + "@kbss.felk.cvut.cz");

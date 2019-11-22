@@ -119,7 +119,7 @@ public class User extends AbstractEntity {
     }
 
     public void changeRoleToStudent(User user){
-        if (role == Role.ADMIN){
+        if (this.role == Role.ADMIN) {
             user.setRole(Role.STUDENT);
         }
     }
