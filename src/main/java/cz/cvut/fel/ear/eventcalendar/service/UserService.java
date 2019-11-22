@@ -54,11 +54,6 @@ public class UserService {
     }
 
     @Transactional
-    public void createEvent() {
-
-    }
-
-    @Transactional
     public void sendInvitation(User userFrom, User userTo, Event event) {
         Objects.requireNonNull(userFrom);
         Objects.requireNonNull(userTo);
@@ -77,7 +72,7 @@ public class UserService {
 
 
     @Transactional
-    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
+    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo, Integer id) {
 
         Objects.requireNonNull(creator);
         if (creator.getRole() != Role.STUDENT) {
@@ -87,13 +82,10 @@ public class UserService {
         Objects.requireNonNull(location);
         Objects.requireNonNull(dateFrom);
         Objects.requireNonNull(dateTo);
-        Event event = creator.createEvent(name, location, dateFrom, dateTo);
+        Event event = creator.createEvent(name, location, dateFrom, dateTo, id);
 
         eventDao.persist(event);
-
-
     }
-
 
     @Transactional(readOnly = true)
     public boolean exists(String username) {

@@ -100,11 +100,12 @@ public class User extends AbstractEntity {
         return invitation;
     }
 
-    public Event createEvent(String name, String location, Date dateFrom, Date dateTo) {
+    public Event createEvent(String name, String location, Date dateFrom, Date dateTo, Integer id) {
         if (role == Role.STUDENT) {
             Event event = new Event();
             List<User> attendees = new ArrayList<>();
             attendees.add(this);
+            event.setId(id);
             event.setName(name);
             event.setMadeByUser(this);
             event.setLocation(location);
@@ -114,6 +115,12 @@ public class User extends AbstractEntity {
             return event;
         } else {
             return null;
+        }
+    }
+
+    public void changeRoleToStudent(User user){
+        if (role == Role.ADMIN){
+            user.setRole(Role.STUDENT);
         }
     }
 
