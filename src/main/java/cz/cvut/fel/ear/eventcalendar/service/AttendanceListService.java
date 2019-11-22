@@ -23,6 +23,7 @@ public class AttendanceListService {
     public void addEvent(AttendanceList attendanceList, AttendanceListEvent toAdd, EventState stateToAdd) {
         Objects.requireNonNull(attendanceList);
         Objects.requireNonNull(toAdd);
+        Objects.requireNonNull(stateToAdd);
         attendanceList.addEvent(toAdd, stateToAdd);
         dao.update(attendanceList);
     }
@@ -32,6 +33,15 @@ public class AttendanceListService {
         Objects.requireNonNull(attendanceList);
         Objects.requireNonNull(toRemove);
         attendanceList.removeEvent(toRemove);
+        dao.update(attendanceList);
+    }
+
+    @Transactional
+    public void changeEventState(AttendanceList attendanceList, AttendanceListEvent event, EventState newState) {
+        Objects.requireNonNull(attendanceList);
+        Objects.requireNonNull(event);
+        Objects.requireNonNull(newState);
+        attendanceList.changeEventState(event, newState);
         dao.update(attendanceList);
     }
 }

@@ -5,7 +5,7 @@ import cz.cvut.fel.ear.eventcalendar.model.Event;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,9 +22,9 @@ import static org.junit.Assert.assertEquals;
 @TestPropertySource(locations = "classpath:application-test.properties")
 public class UserServiceTest {
 
-    @Autowired
+    @Mock
     UserService sut;
-    @Autowired
+    @Mock
     InvitationService invitationService;
     @PersistenceContext
     private EntityManager em;
@@ -34,10 +34,12 @@ public class UserServiceTest {
         User userFrom = Generator.generateStudent();
         User userTo = Generator.generateStudent();
         Event event = Generator.generateEvent();
+        int numberOfUsers = sut.findAll().size();
         em.persist(userTo);
         em.persist(userFrom);
         em.persist(event);
-        assertEquals(invitationService.findAll(), null);
+        numberOfUsers = sut.findAll().size();
+        assertEquals(invitationService.findAll().size(), 0);
         sut.sendInvitation(userFrom, userTo, event);
         assertEquals(invitationService.findAll().size(), 1);
     }

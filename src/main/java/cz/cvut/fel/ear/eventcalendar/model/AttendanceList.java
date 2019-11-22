@@ -42,6 +42,17 @@ public class AttendanceList extends AbstractEntity {
         }
     }
 
+    public void changeEventState(AttendanceListEvent event, EventState newState) {
+        Objects.requireNonNull(event);
+        final Iterator<AttendanceListEvent> it = events.iterator();
+        while (it.hasNext()) {
+            final AttendanceListEvent cur = it.next();
+            if (cur.getId().equals(event.getId())) {
+                cur.setState(newState);
+                break;
+            }
+        }
+    }
     public int size() {
         return events.size();
     }
