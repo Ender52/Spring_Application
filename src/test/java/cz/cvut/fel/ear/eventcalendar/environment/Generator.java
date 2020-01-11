@@ -65,7 +65,10 @@ public class Generator {
     }
 
     public static AttendanceListEvent generateAttendanceListEvent() {
-        AttendanceListEvent attendanceListEvent = new AttendanceListEvent(generateEvent());
+        AttendanceListEvent attendanceListEvent = new AttendanceListEvent();
+        attendanceListEvent.setEvent(generateEvent());
+        attendanceListEvent.setOwner(generateStudent());
+        attendanceListEvent.setState(EventState.GOING);
         return attendanceListEvent;
     }
 

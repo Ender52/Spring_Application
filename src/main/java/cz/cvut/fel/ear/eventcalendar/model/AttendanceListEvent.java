@@ -4,30 +4,33 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@DiscriminatorValue("ATTENDANCELIST")
-public class AttendanceListEvent extends Event {
+public class AttendanceListEvent extends AbstractEntity {
 
     @OneToOne
     @JoinColumn(name = "OWNER_ID")
     private User owner;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "EVENT_ID")
     private Event event;
 
     @Enumerated(value = EnumType.STRING)
     private EventState state;
 
-    public AttendanceListEvent() {
+    public User getOwner() {
+        return owner;
     }
 
-    public AttendanceListEvent(Event other) {
-        setName(other.getName());
-        setLocation(other.getLocation());
-        setDateFrom(other.getDateFrom());
-        setDateTo(other.getDateTo());
-        setMadeByUser(other.getMadeByUser());
-        setCategories(other.getCategories());
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public EventState getState() {
@@ -38,7 +41,7 @@ public class AttendanceListEvent extends Event {
         this.state = state;
     }
 
-    public void changeState(EventState state){
+    public void changeState(EventState state) {
         Objects.requireNonNull(state);
         this.setState(state);
     }
@@ -46,7 +49,6 @@ public class AttendanceListEvent extends Event {
     @Override
     public String toString() {
         return "AttendanceListEvent{" +
-                this.getName() + " " + this.getLocation() +
-                "(" + this.getDateFrom() + " - " + this.getDateTo() + ")}";
+                this.getOwner() + " " + this.getEvent() + "}";
     }
 }

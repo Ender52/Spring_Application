@@ -13,7 +13,7 @@ public class Invitation extends AbstractEntity {
     @JoinColumn(name = "TO_USER_ID")
     private User toUser;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "EVENT_ID")
     private Event event;
 
