@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "CALENDAR_USER")
@@ -27,8 +28,18 @@ public class User extends AbstractEntity {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value=EnumType.STRING)
     private Role role;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<AttendanceListEvent> attendanceList = new ArrayList<>();
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private List<User> friendList = new ArrayList<>();
+
+    public User() {
+        this.role = Role.USER;
+    }
 
     public Role getRole() {
         return role;
@@ -45,12 +56,6 @@ public class User extends AbstractEntity {
     public void setFriendList(List<User> friendList) {
         this.friendList = friendList;
     }
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private AttendanceList attendanceList = new AttendanceList();
-
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<User> friendList = new ArrayList<>();
 
     public String getFirstName() {
         return firstName;
@@ -84,38 +89,45 @@ public class User extends AbstractEntity {
         this.password = password;
     }
 
-    public AttendanceList getAttendanceList() {
+    public List<AttendanceListEvent> getAttendanceList() {
         return attendanceList;
     }
 
-    public void setAttendanceList(AttendanceList attendanceList) {
+    public void setAttendanceList(List<AttendanceListEvent> attendanceList) {
         this.attendanceList = attendanceList;
     }
 
-    public Invitation sendInvitation(User toUser, Event event) {
-        Invitation invitation = new Invitation();
-        invitation.setEvent(event);
-        invitation.setFromUser(this);
-        invitation.setToUser(toUser);
-        return invitation;
+    public void addUserToFriendList(User user){
+        Objects.requireNonNull(user);
+        if (friendList == null) {
+            this.friendList = new ArrayList<>();
+        }
+        friendList.add(user);
     }
 
-    public Event createEvent(String name, String location, Date dateFrom, Date dateTo, Integer id) {
-        if (role == Role.STUDENT) {
-            Event event = new Event();
-            List<User> attendees = new ArrayList<>();
-            attendees.add(this);
-            event.setId(id);
-            event.setName(name);
-            event.setMadeByUser(this);
-            event.setLocation(location);
-            event.setDateFrom(dateFrom);
-            event.setDateTo(dateTo);
-            event.setAttendees(attendees);
-            return event;
-        } else {
-            return null;
+    public void removeUserFromFriendList(User user){
+        Objects.requireNonNull(user);
+        if (friendList == null) {
+            return;
         }
+        friendList.removeIf(c -> Objects.equals(c.getId(), user.getId()));
+    }
+
+    public void addEventToAttendanceList(AttendanceListEvent event, EventState state){
+        Objects.requireNonNull(event);
+        if (attendanceList == null) {
+            this.attendanceList = new ArrayList<>();
+        }
+        event.setState(state);
+        attendanceList.add(event);
+    }
+
+    public void removeEventFromAttendanceList(AttendanceListEvent event){
+        Objects.requireNonNull(event);
+        if (attendanceList == null) {
+            return;
+        }
+        attendanceList.removeIf(c -> Objects.equals(c.getId(), event.getId()));
     }
 
     public void changeRoleToStudent(User user){
@@ -123,7 +135,6 @@ public class User extends AbstractEntity {
             user.setRole(Role.STUDENT);
         }
     }
-
 
     @Override
     public String toString() {

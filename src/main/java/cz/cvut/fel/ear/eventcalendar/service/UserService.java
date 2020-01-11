@@ -4,6 +4,7 @@ import cz.cvut.fel.ear.eventcalendar.dao.EventDao;
 import cz.cvut.fel.ear.eventcalendar.dao.InvitationDao;
 import cz.cvut.fel.ear.eventcalendar.dao.UserDao;
 import cz.cvut.fel.ear.eventcalendar.model.Event;
+import cz.cvut.fel.ear.eventcalendar.model.Invitation;
 import cz.cvut.fel.ear.eventcalendar.model.Role;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,31 +59,36 @@ public class UserService {
         Objects.requireNonNull(userFrom);
         Objects.requireNonNull(userTo);
         Objects.requireNonNull(event);
-        invitationDao.persist(userFrom.sendInvitation(userTo, event));
+        Invitation invitation = new Invitation();
+        invitation.setFromUser(userFrom);
+        invitation.setToUser(userTo);
+        invitation.setEvent(event);
+        invitationDao.persist(invitation);
     }
 
     @Transactional
-    public void deleteInvitation(User userFrom, User userTo, Event event) {
-        Objects.requireNonNull(userFrom);
-        Objects.requireNonNull(userTo);
+    public void deleteInvitation(Event event) {
         Objects.requireNonNull(event);
-
-        invitationDao.remove(userFrom.sendInvitation(userTo, event));
+        invitationDao.remove(invitationDao.find(event.getId()));
     }
 
 
     @Transactional
-    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo, Integer id) {
-
+    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
         Objects.requireNonNull(creator);
-        if (creator.getRole() != Role.STUDENT) {
+        if (creator.getRole() != Role.STUDENT || creator.getRole() != Role.ADMIN) {
             return;
         }
         Objects.requireNonNull(name);
         Objects.requireNonNull(location);
         Objects.requireNonNull(dateFrom);
         Objects.requireNonNull(dateTo);
-        Event event = creator.createEvent(name, location, dateFrom, dateTo, id);
+        Event event = new Event();
+        event.setMadeByUser(creator);
+        event.setName(name);
+        event.setLocation(location);
+        event.setDateFrom(dateFrom);
+        event.setDateTo(dateTo);
 
         eventDao.persist(event);
     }

@@ -25,14 +25,12 @@ public class Event extends AbstractEntity {
     @Column(nullable = false)
     private Date dateTo;
 
-    @Basic(optional = false)
-    @Column(nullable = false)
+    @ManyToOne
+    @JoinColumn(name="MADE_BY_USER_ID")
     private User madeByUser;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<User> attendees = new ArrayList<>();
-
     @ManyToMany
+    @JoinTable(name = "EVENT_CAT", joinColumns = @JoinColumn(name = "EVENT_ID"), inverseJoinColumns = @JoinColumn(name = "CAT_ID"))
     @OrderBy("name")
     private List<Category> categories = new ArrayList<>();
 
@@ -74,14 +72,6 @@ public class Event extends AbstractEntity {
 
     public void setMadeByUser(User madeByUser) {
         this.madeByUser = madeByUser;
-    }
-
-    public List<User> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(List<User> attendees) {
-        this.attendees = attendees;
     }
 
     public List<Category> getCategories() {

@@ -54,12 +54,17 @@ public class Generator {
     }
 
     public static Event generateEvent() {
+        final Event event = new Event();
+        event.setName("Event" + randomInt());
+        event.setLocation("");
+        event.setDateFrom(new Date());
+        event.setDateTo(new Date());
         User creator = generateStudent();
-        return creator.createEvent("Event" + randomInt(), "", new Date(), new Date(), randomInt());
+        event.setMadeByUser(creator);
+        return event;
     }
 
     public static AttendanceListEvent generateAttendanceListEvent() {
-        User cretor = generateStudent();
         AttendanceListEvent attendanceListEvent = new AttendanceListEvent(generateEvent());
         return attendanceListEvent;
     }

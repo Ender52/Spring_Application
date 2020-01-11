@@ -1,13 +1,22 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue("ATTENDANCELIST")
 public class AttendanceListEvent extends Event {
+
+    @OneToOne
+    @JoinColumn(name = "OWNER_ID")
+    private User owner;
+
+    @OneToOne
+    @JoinColumn(name = "EVENT_ID")
+    private Event event;
+
+    @Enumerated(value = EnumType.STRING)
+    private EventState state;
 
     public AttendanceListEvent() {
     }
@@ -17,11 +26,9 @@ public class AttendanceListEvent extends Event {
         setLocation(other.getLocation());
         setDateFrom(other.getDateFrom());
         setDateTo(other.getDateTo());
-        setAttendees(other.getAttendees());
+        setMadeByUser(other.getMadeByUser());
+        setCategories(other.getCategories());
     }
-
-    @Enumerated(EnumType.STRING)
-    private EventState state;
 
     public EventState getState() {
         return state;
@@ -29,6 +36,11 @@ public class AttendanceListEvent extends Event {
 
     public void setState(EventState state) {
         this.state = state;
+    }
+
+    public void changeState(EventState state){
+        Objects.requireNonNull(state);
+        this.setState(state);
     }
 
     @Override

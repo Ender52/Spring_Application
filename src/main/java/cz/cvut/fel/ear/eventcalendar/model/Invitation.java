@@ -1,22 +1,20 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 public class Invitation extends AbstractEntity {
 
-    @Basic(optional = false)
-    @Column(nullable = false)
+    @OneToOne
+    @JoinColumn(name = "FROM_USER_ID")
     private User fromUser;
 
-    @Basic(optional = false)
-    @Column(nullable = false)
+    @OneToOne
+    @JoinColumn(name = "TO_USER_ID")
     private User toUser;
 
     @OneToOne
+    @JoinColumn(name = "EVENT_ID")
     private Event event;
 
     public User getFromUser() {

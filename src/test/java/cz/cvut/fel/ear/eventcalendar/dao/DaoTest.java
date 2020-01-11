@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class DaoTest {
 
     @Autowired
-    protected AttendanceListDao attendanceListDao;
+    protected AttendanceListEventDao attendanceListEventDao;
 
     @Autowired
     protected CategoryDao categoryDao;
@@ -35,7 +35,7 @@ public class DaoTest {
      */
     @Test
     public void testRepositoriesInApplicationContext(){
-        Assert.assertNotNull(attendanceListDao);
+        Assert.assertNotNull(attendanceListEventDao);
         Assert.assertNotNull(categoryDao);
         Assert.assertNotNull(eventDao);
         Assert.assertNotNull(invitationDao);
