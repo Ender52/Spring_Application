@@ -76,7 +76,7 @@ public class UserService {
     @Transactional
     public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
         Objects.requireNonNull(creator);
-        if (creator.getRole() != Role.STUDENT || creator.getRole() != Role.ADMIN) {
+        if (creator.getRole() != Role.STUDENT && creator.getRole() != Role.ADMIN) {
             return;
         }
         Objects.requireNonNull(name);

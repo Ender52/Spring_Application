@@ -23,6 +23,6 @@ public class UserDao extends BaseDao<User>{
 
     @Override
     public List<User> findAll() {
-        return em.createQuery("SELECT u FROM calendar_user u", User.class).getResultList();
+        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
     }
 }
