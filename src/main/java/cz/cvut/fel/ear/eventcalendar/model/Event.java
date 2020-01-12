@@ -2,11 +2,15 @@ package cz.cvut.fel.ear.eventcalendar.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name="Event.findByCategory", query = "SELECT e from Event e WHERE :category MEMBER OF e.categories"),
+        @NamedQuery(name = "Event.findByLocation", query = "SELECT e FROM Event e WHERE e.location = :location"),
+        @NamedQuery(name = "Event.findMadeByUser", query = "SELECT e FROM Event e WHERE e.madeByUser = :madeByUser")
+})
 public class Event extends AbstractEntity {
 
     @Basic(optional = false)
@@ -19,11 +23,11 @@ public class Event extends AbstractEntity {
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private Date dateFrom;
+    private String dateFrom;
 
     @Basic(optional = false)
     @Column(nullable = false)
-    private Date dateTo;
+    private String dateTo;
 
     @ManyToOne
     @JoinColumn(name="MADE_BY_USER_ID")
@@ -50,19 +54,19 @@ public class Event extends AbstractEntity {
         this.location = location;
     }
 
-    public Date getDateFrom() {
+    public String getDateFrom() {
         return dateFrom;
     }
 
-    public void setDateFrom(Date dateFrom) {
+    public void setDateFrom(String dateFrom) {
         this.dateFrom = dateFrom;
     }
 
-    public Date getDateTo() {
+    public String getDateTo() {
         return dateTo;
     }
 
-    public void setDateTo(Date dateTo) {
+    public void setDateTo(String dateTo) {
         this.dateTo = dateTo;
     }
 

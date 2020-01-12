@@ -7,7 +7,7 @@ import javax.persistence.NoResultException;
 import java.util.List;
 
 @Repository
-public class UserDao extends BaseDao<User>{
+public class UserDao extends BaseDao<User> {
     public UserDao() {
         super(User.class);
     }
@@ -21,8 +21,21 @@ public class UserDao extends BaseDao<User>{
         }
     }
 
-    @Override
-    public List<User> findAll() {
-        return em.createQuery("SELECT u FROM User u", User.class).getResultList();
+    public List<User> findByFirstName(String firstName) {
+        try {
+            return em.createNamedQuery("User.findByFirstName", User.class).setParameter("firstName", firstName)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    public List<User> findByLastName(String lastName) {
+        try {
+            return em.createNamedQuery("User.findByLastName", User.class).setParameter("lastName", lastName)
+                    .getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

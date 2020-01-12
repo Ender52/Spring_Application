@@ -1,10 +1,11 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name = "Category.findByName", query = "SELECT c FROM Category c WHERE c.name = :name")
+})
 public class Category extends AbstractEntity {
 
     @Basic(optional = false)

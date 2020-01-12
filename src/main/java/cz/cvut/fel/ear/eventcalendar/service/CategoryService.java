@@ -17,39 +17,39 @@ public class CategoryService {
     private final EventDao eventDao;
 
     @Autowired
-    public CategoryService(CategoryDao dao, EventDao eventDao){
+    public CategoryService(CategoryDao dao, EventDao eventDao) {
         this.dao = dao;
         this.eventDao = eventDao;
     }
 
     @Transactional(readOnly = true)
-    public List<Category> findAll(){
+    public List<Category> findAll() {
         return dao.findAll();
     }
 
     @Transactional(readOnly = true)
-    public Category find(Integer id){
+    public Category find(Integer id) {
         return dao.find(id);
     }
 
     @Transactional
-    public void persist(Category category){
+    public void persist(Category category) {
         Objects.requireNonNull(category);
         dao.persist(category);
     }
 
     @Transactional
-    public void update(Category category){
+    public void update(Category category) {
         dao.update(category);
     }
 
     @Transactional
-    public void remove(Category category){
+    public void remove(Category category) {
         dao.remove(category);
     }
 
     @Transactional
-    public void addEvent(Category category, Event event){
+    public void addEvent(Category category, Event event) {
         Objects.requireNonNull(category);
         Objects.requireNonNull(event);
         event.addCategory(category);
@@ -57,11 +57,15 @@ public class CategoryService {
     }
 
     @Transactional
-    public void removeEvent(Category category, Event event){
+    public void removeEvent(Category category, Event event) {
         Objects.requireNonNull(category);
         Objects.requireNonNull(event);
         event.removeCategory(category);
         eventDao.update(event);
     }
 
+    @Transactional(readOnly = true)
+    public boolean exists(String name) {
+        return dao.findByName(name) != null;
+    }
 }

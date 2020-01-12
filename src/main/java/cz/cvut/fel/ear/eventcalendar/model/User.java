@@ -8,7 +8,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "CALENDAR_USER")
 @NamedQueries({
-        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username")
+        @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+        @NamedQuery(name = "User.findByFirstName", query = "SELECT u FROM User u WHERE u.firstName = :firstName"),
+        @NamedQuery(name = "User.findByLastName", query = "SELECT u FROM User u WHERE u.lastName = :lastName")
 })
 public class User extends AbstractEntity {
 
@@ -31,9 +33,13 @@ public class User extends AbstractEntity {
     private Role role;
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name="USER_ALIST", joinColumns = @JoinColumn(name="USER_ID"), inverseJoinColumns = @JoinColumn(name="ALIST_ID"))
+    @OrderBy("event")
     private List<AttendanceListEvent> attendanceList = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinTable(name="USER_FLIST", joinColumns = @JoinColumn(name="USER_ID"), inverseJoinColumns = @JoinColumn(name="FLIST_ID"))
+    @OrderBy("firstName")
     private List<User> friendList = new ArrayList<>();
 
     public User() {

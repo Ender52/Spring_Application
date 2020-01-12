@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,7 +26,7 @@ public class EventController {
     }
 
     @PostMapping(value = "/{name}/{location}/{dateFrom}/{dateTo}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createProduct(@RequestBody User creator, @PathVariable String name, @PathVariable String location, @PathVariable Date dateFrom, @PathVariable Date dateTo) {
+    public void createProduct(@RequestBody User creator, @PathVariable String name, @PathVariable String location, @PathVariable String dateFrom, @PathVariable String dateTo) {
         userService.createEvent(creator, name, location, dateFrom, dateTo);
 //        LOG.debug("Created product {}.", event);
 //        final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/{id}", event.getId());

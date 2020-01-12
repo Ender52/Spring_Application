@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,18 +62,18 @@ public class UserService {
         invitation.setFromUser(userFrom);
         invitation.setToUser(userTo);
         invitation.setEvent(event);
+
         invitationDao.persist(invitation);
     }
 
     @Transactional
-    public void deleteInvitation(Event event) {
-        Objects.requireNonNull(event);
-        invitationDao.remove(invitationDao.find(event.getId()));
+    public void cancelInvitation(Invitation invitation) {
+        Objects.requireNonNull(invitation);
+        invitationDao.remove(invitationDao.find(invitation.getId()));
     }
 
-
     @Transactional
-    public void createEvent(User creator, String name, String location, Date dateFrom, Date dateTo) {
+    public void createEvent(User creator, String name, String location, String dateFrom, String dateTo) {
         Objects.requireNonNull(creator);
         if (creator.getRole() != Role.STUDENT && creator.getRole() != Role.ADMIN) {
             return;
@@ -94,7 +93,7 @@ public class UserService {
     }
 
     @Transactional
-    public void changeRoleToStudent(User admin, User user){
+    public void changeRoleToStudent(User admin, User user) {
         Objects.requireNonNull(admin);
         Objects.requireNonNull(user);
         admin.changeRoleToStudent(user);
