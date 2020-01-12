@@ -1,7 +1,6 @@
 package cz.cvut.fel.ear.eventcalendar.rest;
 
 import cz.cvut.fel.ear.eventcalendar.exceptions.NotFoundException;
-import cz.cvut.fel.ear.eventcalendar.model.Event;
 import cz.cvut.fel.ear.eventcalendar.model.Invitation;
 import cz.cvut.fel.ear.eventcalendar.rest.util.RestUtils;
 import cz.cvut.fel.ear.eventcalendar.service.InvitationService;

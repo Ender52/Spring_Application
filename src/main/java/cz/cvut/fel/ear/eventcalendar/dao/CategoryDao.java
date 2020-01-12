@@ -1,7 +1,6 @@
 package cz.cvut.fel.ear.eventcalendar.dao;
 
 import cz.cvut.fel.ear.eventcalendar.model.Category;
-import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;

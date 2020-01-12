@@ -2,7 +2,6 @@ package cz.cvut.fel.ear.eventcalendar.environment;
 
 import cz.cvut.fel.ear.eventcalendar.model.*;
 
-import java.util.Date;
 import java.util.Random;
 
 public class Generator {

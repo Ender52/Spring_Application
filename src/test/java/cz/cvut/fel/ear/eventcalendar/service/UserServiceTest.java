@@ -54,20 +54,8 @@ public class UserServiceTest {
         em.persist(event);
         sut.sendInvitation(userFrom, userTo, event);
         assertEquals(invitationService.findAll().size(), 1);
-        /*sut.deleteInvitation(userFrom, userTo, event);
-        assertEquals(invitationService.findAll().size(), 0);*/
 
     }
-
-
-    /*@Test
-    public void createEventCreatesEvent() {
-        User user = Generator.generateStudent();
-        em.persist(user);
-        sut.createEvent(user, "EVENT1", "Dejvice", new Date(), new Date(), 100);
-        Event result = em.find(Event.class, 100);
-        assertEquals(result.getName(), "EVENT1");
-    }*/
 
     @Test
     public void changeRoleChangesRole() {

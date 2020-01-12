@@ -2,7 +2,6 @@ package cz.cvut.fel.ear.eventcalendar.service;
 
 import cz.cvut.fel.ear.eventcalendar.dao.AttendanceListEventDao;
 import cz.cvut.fel.ear.eventcalendar.model.AttendanceListEvent;
-import cz.cvut.fel.ear.eventcalendar.model.Event;
 import cz.cvut.fel.ear.eventcalendar.model.EventState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package cz.cvut.fel.ear.eventcalendar.service;
 
 import cz.cvut.fel.ear.eventcalendar.dao.EventDao;
-import cz.cvut.fel.ear.eventcalendar.dao.InvitationDao;
 import cz.cvut.fel.ear.eventcalendar.dao.UserDao;
 import cz.cvut.fel.ear.eventcalendar.model.AttendanceListEvent;
 import cz.cvut.fel.ear.eventcalendar.model.Category;
