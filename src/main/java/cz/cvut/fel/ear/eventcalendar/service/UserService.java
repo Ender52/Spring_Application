@@ -103,4 +103,14 @@ public class UserService {
     public boolean exists(String username) {
         return dao.findByUsername(username) != null;
     }
+
+    @Transactional(readOnly = true)
+    public List<User> findByFirstName(String firstName) {
+        return dao.findByFirstName(firstName);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> findByLastName(String lastName) {
+        return dao.findByLastName(lastName);
+    }
 }

@@ -4,6 +4,7 @@ import cz.cvut.fel.ear.eventcalendar.dao.EventDao;
 import cz.cvut.fel.ear.eventcalendar.dao.InvitationDao;
 import cz.cvut.fel.ear.eventcalendar.dao.UserDao;
 import cz.cvut.fel.ear.eventcalendar.model.AttendanceListEvent;
+import cz.cvut.fel.ear.eventcalendar.model.Category;
 import cz.cvut.fel.ear.eventcalendar.model.Event;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,21 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<Event> findAll() {
         return dao.findAll();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> findAll(Category category) {
+        return dao.findAll(category);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> findByLocation(String location) {
+        return dao.findByLocation(location);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Event> findMadeByUser(User user) {
+        return dao.findMadeByUser(user);
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +73,7 @@ public class EventService {
         List<User> attendees = new ArrayList<>();
         for (User u : users) {
             for (AttendanceListEvent e : u.getAttendanceList()){
-                if (e.getEvent() == event){
+                if (e.getAleId().getEvent() == event){
                     attendees.add(u);
                     break;
                 }

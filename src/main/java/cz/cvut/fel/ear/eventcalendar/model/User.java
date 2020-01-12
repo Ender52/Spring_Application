@@ -34,7 +34,7 @@ public class User extends AbstractEntity {
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name="USER_ALIST", joinColumns = @JoinColumn(name="USER_ID"), inverseJoinColumns = @JoinColumn(name="ALIST_ID"))
-    @OrderBy("event")
+    @OrderBy("aleId")
     private List<AttendanceListEvent> attendanceList = new ArrayList<>();
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
@@ -132,7 +132,7 @@ public class User extends AbstractEntity {
         if (attendanceList == null) {
             return;
         }
-        attendanceList.removeIf(c -> Objects.equals(c.getId(), event.getId()));
+        attendanceList.removeIf(e -> Objects.equals(e.getAleId(), event.getAleId()));
     }
 
     public void changeRoleToStudent(User user){

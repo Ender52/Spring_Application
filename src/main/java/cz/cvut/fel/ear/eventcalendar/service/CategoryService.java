@@ -68,4 +68,9 @@ public class CategoryService {
     public boolean exists(String name) {
         return dao.findByName(name) != null;
     }
+
+    @Transactional(readOnly = true)
+    public List<Category> findByName(String name) {
+        return dao.findByName(name);
+    }
 }

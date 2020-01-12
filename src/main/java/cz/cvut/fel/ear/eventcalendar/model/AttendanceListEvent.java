@@ -4,34 +4,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class AttendanceListEvent extends AbstractEntity {
+public class AttendanceListEvent {
 
-    @OneToOne
-    @JoinColumn(name = "OWNER_ID")
-    private User owner;
-
-    @ManyToOne
-    @JoinColumn(name = "EVENT_ID")
-    private Event event;
+    @Id
+    private AttendanceListEventId aleId;
 
     @Enumerated(value = EnumType.STRING)
     private EventState state;
-
-    public User getOwner() {
-        return owner;
-    }
-
-    public void setOwner(User owner) {
-        this.owner = owner;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
 
     public EventState getState() {
         return state;
@@ -39,6 +18,14 @@ public class AttendanceListEvent extends AbstractEntity {
 
     public void setState(EventState state) {
         this.state = state;
+    }
+
+    public AttendanceListEventId getAleId() {
+        return aleId;
+    }
+
+    public void setAleId(AttendanceListEventId aleId) {
+        this.aleId = aleId;
     }
 
     public void changeState(EventState state) {
@@ -49,6 +36,6 @@ public class AttendanceListEvent extends AbstractEntity {
     @Override
     public String toString() {
         return "AttendanceListEvent{" +
-                this.getOwner() + " " + this.getEvent() + "}";
+                this.getAleId().getOwner() + " " + this.getAleId().getEvent() + "}";
     }
 }

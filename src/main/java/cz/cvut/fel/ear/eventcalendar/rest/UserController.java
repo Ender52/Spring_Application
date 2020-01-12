@@ -1,8 +1,11 @@
 package cz.cvut.fel.ear.eventcalendar.rest;
 
+import cz.cvut.fel.ear.eventcalendar.exceptions.NotFoundException;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import cz.cvut.fel.ear.eventcalendar.rest.util.RestUtils;
 import cz.cvut.fel.ear.eventcalendar.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,37 +19,34 @@ import java.util.List;
 @RequestMapping("/rest/users")
 public class UserController {
 
-
-    private final UserService userService;
+    private final UserService service;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
-    //private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserController.class);
 
-    //private final UserService userService;
-
-    //@Autowired
-    /*public UserController(UserService userService) {
-        this.userService = userService;
-    }*/
-
-    @RequestMapping("/hello")
-    public String foo(){
-        return "xd";
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<User> getUsers() {
+        return service.findAll();
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> register(@RequestBody User user) {
-        userService.persist(user);
+        service.persist(user);
+        LOG.debug("User {} successfully registered.", user);
         final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/current");
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<User> getCategories() {
-        return userService.findAll();
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public User getUser(@PathVariable Integer id) {
+        final User u = service.find(id);
+        if (u == null) {
+            throw NotFoundException.create("Product", id);
+        }
+        return u;
     }
 }
 

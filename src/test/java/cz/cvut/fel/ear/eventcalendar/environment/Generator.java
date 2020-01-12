@@ -57,8 +57,8 @@ public class Generator {
         final Event event = new Event();
         event.setName("Event" + randomInt());
         event.setLocation("");
-        event.setDateFrom(new Date());
-        event.setDateTo(new Date());
+        event.setDateFrom("2013");
+        event.setDateTo("2016");
         User creator = generateStudent();
         event.setMadeByUser(creator);
         return event;
@@ -66,8 +66,8 @@ public class Generator {
 
     public static AttendanceListEvent generateAttendanceListEvent() {
         AttendanceListEvent attendanceListEvent = new AttendanceListEvent();
-        attendanceListEvent.setEvent(generateEvent());
-        attendanceListEvent.setOwner(generateStudent());
+        attendanceListEvent.getAleId().setEvent(generateEvent());
+        attendanceListEvent.getAleId().setOwner(generateStudent());
         attendanceListEvent.setState(EventState.GOING);
         return attendanceListEvent;
     }
