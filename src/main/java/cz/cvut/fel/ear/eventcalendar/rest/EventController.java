@@ -2,7 +2,9 @@ package cz.cvut.fel.ear.eventcalendar.rest;
 
 import cz.cvut.fel.ear.eventcalendar.exceptions.NotFoundException;
 import cz.cvut.fel.ear.eventcalendar.exceptions.ValidationException;
+import cz.cvut.fel.ear.eventcalendar.model.Category;
 import cz.cvut.fel.ear.eventcalendar.model.Event;
+import cz.cvut.fel.ear.eventcalendar.model.User;
 import cz.cvut.fel.ear.eventcalendar.rest.util.RestUtils;
 import cz.cvut.fel.ear.eventcalendar.service.EventService;
 import cz.cvut.fel.ear.eventcalendar.service.UserService;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,13 +38,14 @@ public class EventController {
         return service.findAll();
     }
 
-   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-   public ResponseEntity<Void> createEvent(@RequestBody Event event){
-       service.persist(event);
-       LOG.debug("Created event {}.", event);
-       final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/{id}", event.getId());
-       return new ResponseEntity<>(headers, HttpStatus.CREATED);
-   }
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createEvent(@RequestBody Event event) {
+        service.persist(event);
+        LOG.debug("Created event {}.", event);
+        final HttpHeaders headers = RestUtils.createLocationHeaderFromCurrentUri("/{id}", event.getId());
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
+    }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Event getEvent(@PathVariable Integer id) {
@@ -52,6 +56,17 @@ public class EventController {
         return e;
     }
 
+    @GetMapping(value = "/{user}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Event> getEventsByUser(@PathVariable User user) {
+        return service.findMadeByUser(user);
+    }
+
+    @GetMapping(value = "/{location}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Event> getEventsByLocation(@PathVariable String location) {
+        return service.findByLocation(location);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateEvent(@PathVariable Integer id, @RequestBody Event event) {
@@ -63,6 +78,7 @@ public class EventController {
         LOG.debug("Updated event {}.", event);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEvent(@PathVariable Integer id) {
@@ -72,5 +88,10 @@ public class EventController {
         }
         service.remove(toRemove);
         LOG.debug("Removed event {}.", toRemove);
+    }
+
+    @GetMapping(value = "/{id}/attendees", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<User> getAttendees(@PathVariable Integer id) {
+        return service.getAttendees(service.find(id));
     }
 }

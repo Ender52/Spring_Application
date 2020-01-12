@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class CategoryController {
         return service.findAll();
     }
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createCategory(@RequestBody Category category) {
         service.persist(category);
@@ -60,14 +61,26 @@ public class CategoryController {
         return eventService.findAll(getById(id));
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
     @PostMapping(value = "/{id}/events", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addEventToCategory(@PathVariable Integer id, @RequestBody Event event) {
         final Category category = getById(id);
         service.addEvent(category, event);
-        LOG.debug("Product {} added into category {}.", event, category);
+        LOG.debug("Event {} added into category {}.", event, category);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
+    @PostMapping(value = "/{categoryId}/events/{eventId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addEventToCategory(@PathVariable Integer categoryId, @PathVariable Integer eventId) {
+        final Category category = getById(categoryId);
+        final Event event = eventService.find(eventId);
+        service.addEvent(category, event);
+        LOG.debug("Event {} added into category {}.", event, category);
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_ADMIN')")
     @DeleteMapping(value = "/{categoryId}/events/{eventId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEventFromCategory(@PathVariable Integer categoryId,

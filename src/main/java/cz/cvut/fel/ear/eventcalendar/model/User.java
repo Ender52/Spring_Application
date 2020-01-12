@@ -1,5 +1,7 @@
 package cz.cvut.fel.ear.eventcalendar.model;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +94,14 @@ public class User extends AbstractEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void encodePassword(PasswordEncoder encoder) {
+        this.password = encoder.encode(password);
+    }
+
+    public void erasePassword() {
+        this.password = null;
     }
 
     public List<AttendanceListEvent> getAttendanceList() {
