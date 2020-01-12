@@ -19,7 +19,7 @@ public class SystemInitializer {
     /**
      * Default username
      */
-    private static final String USERNAME = "student@fel.cvut.cz";
+    private static final String USERNAME = "admin";
 
     private final UserService userService;
 

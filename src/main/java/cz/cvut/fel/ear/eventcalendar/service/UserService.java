@@ -8,6 +8,7 @@ import cz.cvut.fel.ear.eventcalendar.model.Invitation;
 import cz.cvut.fel.ear.eventcalendar.model.Role;
 import cz.cvut.fel.ear.eventcalendar.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,11 +21,14 @@ public class UserService {
     private final InvitationDao invitationDao;
     private final EventDao eventDao;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserDao dao, InvitationDao invitationDao, EventDao eventDao) {
+    public UserService(UserDao dao, InvitationDao invitationDao, EventDao eventDao, PasswordEncoder passwordEncoder) {
         this.dao = dao;
         this.invitationDao = invitationDao;
         this.eventDao = eventDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -40,6 +44,7 @@ public class UserService {
     @Transactional
     public void persist(User user) {
         Objects.requireNonNull(user);
+        user.encodePassword(passwordEncoder);
         dao.persist(user);
     }
 
